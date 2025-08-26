@@ -2,6 +2,7 @@ from fastapi import Request
 import time
 
 async def global_middleware(request: Request, call_next):
+    print("*****This is Global Middleware******")
     start_time = time.time()
     response = await call_next(request)
     process_time = time.time() - start_time

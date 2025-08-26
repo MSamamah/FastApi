@@ -1,4 +1,5 @@
 from typing import Dict, List, Callable
+from fastapi import Request
 
 class MiddlewareRegistry:
     def __init__(self):
@@ -14,11 +15,18 @@ class MiddlewareRegistry:
     def get_middlewares_for_route(self, path: str) -> List[Callable]:
         middlewares = []
         
-        for route_path, groups in self.route_middleware.items():
-            if path.startswith(route_path):
-                for group_name in groups:
-                    if group_name in self.middleware_groups:
-                        middlewares.extend(self.middleware_groups[group_name])
+        # Find the most specific route match
+        matched_route = None
+        for route_path in self.route_middleware.keys():
+            if path == route_path or path.startswith(route_path + "/"):
+                # This is a more specific match than what we have
+                if matched_route is None or len(route_path) > len(matched_route):
+                    matched_route = route_path
+        
+        if matched_route is not None:
+            for group_name in self.route_middleware[matched_route]:
+                if group_name in self.middleware_groups:
+                    middlewares.extend(self.middleware_groups[group_name])
         
         return middlewares
 

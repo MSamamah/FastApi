@@ -4,7 +4,7 @@ from app.models.shopify.orders.order_response import OrderResponse
 
 router = APIRouter()
 
-@router.get("/order/{order_id}", response_model=OrderResponse)
+@router.get("/order/{order_id}", response_model=OrderResponse, name="get_order_by_id")
 def get_order(order_id: str):
     """
     Fetch Shopify order details by ID.

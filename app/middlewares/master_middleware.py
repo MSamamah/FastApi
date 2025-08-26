@@ -2,6 +2,7 @@ from fastapi import Request
 from .registry import registry
 
 async def master_middleware(request: Request, call_next):
+    # print(f"helloeeeeeeee {request.url.path}")
     # Get all middlewares for this route
     middlewares = registry.get_middlewares_for_route(request.url.path)
     

@@ -4,7 +4,7 @@ from app.models.shopify.orders.orders_count import OrdersCountResponse
 
 router = APIRouter()
 
-@router.get("/orders/count", response_model=OrdersCountResponse)
+@router.get("/orders/count", response_model=OrdersCountResponse, name="get_orders_count")
 def get_orders_count():
     """
     Fetch total number of Shopify orders.
