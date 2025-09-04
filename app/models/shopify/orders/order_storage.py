@@ -1,9 +1,9 @@
-from sqlalchemy import Column, Integer, String, DateTime, Text, JSON
+from sqlalchemy import Column, Integer, String, DateTime, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from datetime import datetime
-import os
+from app.config import DATABASE_URL
 import json
 
 # Create base class for SQLAlchemy models
@@ -30,13 +30,10 @@ class StoredOrder(Base):
             "updated_at": self.updated_at.isoformat() if self.updated_at else None
         }
 
-# Database setup
-db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'orders.db')
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{db_path}"
-
+# Database setup using the URL from config
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, 
-    connect_args={"check_same_thread": False}
+    DATABASE_URL, 
+    connect_args={"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

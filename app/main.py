@@ -30,6 +30,7 @@ app = FastAPI(
 registry.assign_to_route("/shopify/orders", ["orders_all"])
 registry.assign_to_route("/shopify/orders/count", ["orders_count"])
 registry.assign_to_route("/shopify/order", ["orders_all"])
+registry.assign_to_route("/shopify/order_storage_routes", ["orders_all"])
 
 # Apply the master middleware
 app.middleware("http")(master_middleware)
